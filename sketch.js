@@ -6,6 +6,10 @@ var gameState=1;
 var knife,fruit ,monster,fruitGroup,monsterGroup, score,r,randomFruit, position;
 var knifeImage , fruit1, fruit2 ,fruit3,fruit4, monsterImage, gameOverImage;
 
+ //1° passo é declarar as variaveis p o som
+
+var gameOverSound, batidaSound;
+
 function preload(){
   
   knifeImage = loadImage("knife.png");
@@ -16,7 +20,11 @@ function preload(){
   fruit4 = loadImage("fruit4.png");
   gameOverImage = loadImage("gameover.png")
 
-  //carregue o som aqui
+  //2° passo é carregar a música
+  gameOverSound = loadSound("gameover.mp3");
+  batidaSound = loadSound("knifeSwooshSound.mp3");
+  
+  
 }
 
 
@@ -54,7 +62,16 @@ function draw() {
   
     // Aumenta a pontuação se a espada tocar na fruta
     if(fruitGroup.isTouching(knife)){
+      
       fruitGroup.destroyEach();
+      
+//     3° passo aumentar a pontuação.
+           
+      score = score + 2;
+      
+//       4° passo - colocar o som da batida
+      batidaSound.play();
+      
     }
     else
     {
@@ -62,7 +79,8 @@ function draw() {
       if(monsterGroup.isTouching(knife)){
         gameState=END;
         
-        //adicione o som do gameover (fim de jogo) aqui
+        //5° passo - adicione o som do gameover (fim de jogo) aqui
+        gameOverSound.play();
         
         fruitGroup.destroyEach();
         monsterGroup.destroyEach();
@@ -90,10 +108,10 @@ function Monster(){
     monster=createSprite(400,200,20,20);
     monster.addAnimation("moving", monsterImage);
     monster.y=Math.round(random(100,550));
-    //atualize o código abaixo para aumentar a velocidade do monsterGroup (grupo de monstros) em 10
-    monster.velocityX = -8;
-    monster.setLifetime=50;
     
+    //6° passo - atualize o código abaixo para aumentar a velocidade do monsterGroup (grupo de monstros) em 10
+    monster.velocityX = -8;
+    monster.setLifetime = 50;
     monsterGroup.add(monster);
   }
 }
